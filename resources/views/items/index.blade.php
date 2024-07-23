@@ -62,13 +62,13 @@
                                     @foreach($items as $item)
                                         <tr>
                                             <td>{{ $no++ }}</td>
-                                            <td>{{ $item->nama_item }}</td>
-                                            <td>{{ $item->stok }}</td>
-                                            <td>{{ $item->categories->category }}</td>
+                                            <td>{{ $item['nama_item'] }}</td>
+                                            <td>{{ $item['stok'] }}</td>
+                                            <td>{{ $item['categories']['category'] }}</td>
                                             <td>
                                                 <!-- Actions for item (not transactions) -->
-                                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editItemModal{{ $item->id }}"><i class="fa fa-pen"></i> Edit</button>
-                                                <form action="{{ route('items.destroy', $item->id) }}" method="POST" style="display:inline;">
+                                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editItemModal{{ $item['id'] }}"><i class="fa fa-pen"></i> Edit</button>
+                                                <form action="{{ route('items.destroy', $item['id']) }}" method="POST" style="display:inline;">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button onclick="return confirm('Yakin ingin menghapus item ini?')" type="submit" class="btn btn-danger"><i class="fa fa-trash"></i> Hapus</button>
@@ -77,30 +77,30 @@
                                         </tr>
                         
                                         <!-- Edit Item Modal -->
-                                        <div class="modal fade" id="editItemModal{{ $item->id }}" tabindex="-1" aria-labelledby="editItemModalLabel{{ $item->id }}" aria-hidden="true">
+                                        <div class="modal fade" id="editItemModal{{ $item['id'] }}" tabindex="-1" aria-labelledby="editItemModalLabel{{ $item['id'] }}" aria-hidden="true">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="editItemModalLabel{{ $item->id }}">Edit Item</h5>
+                                                        <h5 class="modal-title" id="editItemModalLabel{{ $item['id'] }}">Edit Item</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <form action="{{ route('items.update', $item->id) }}" method="POST">
+                                                        <form action="{{ route('items.update', $item['id']) }}" method="POST">
                                                             @csrf
                                                             @method('PUT')
                                                             <div class="mb-3">
-                                                                <label for="nama_item{{ $item->id }}" class="form-label">Nama Item</label>
-                                                                <input type="text" name="nama_item" class="form-control" id="nama_item{{ $item->id }}" value="{{ $item->nama_item }}" required>
+                                                                <label for="nama_item{{ $item['id'] }}" class="form-label">Nama Item</label>
+                                                                <input type="text" name="nama_item" class="form-control" id="nama_item{{ $item['id'] }}" value="{{ $item['nama_item'] }}" required>
                                                             </div>
                                                             <div class="mb-3">
-                                                                <label for="stok{{ $item->id }}" class="form-label">Stok</label>
-                                                                <input type="number" name="stok" class="form-control" id="stok{{ $item->id }}" value="{{ $item->stok }}" required>
+                                                                <label for="stok{{ $item['id'] }}" class="form-label">Stok</label>
+                                                                <input type="number" name="stok" class="form-control" id="stok{{ $item['id'] }}" value="{{ $item['stok'] }}" required>
                                                             </div>
                                                             <div class="mb-3">
-                                                                <label for="category_id{{ $item->id }}" class="form-label">Jenis Barang</label>
-                                                                <select name="category_id" class="form-control" id="category_id{{ $item->id }}" required>
+                                                                <label for="category_id{{ $item['id'] }}" class="form-label">Jenis Barang</label>
+                                                                <select name="category_id" class="form-control" id="category_id{{ $item['id'] }}" required>
                                                                     @foreach ($categories as $category)
-                                                                        <option value="{{ $category->id }}" {{ $item->category_id == $category->id ? 'selected' : '' }}>{{ $category->category }}</option>
+                                                                        <option value="{{ $category['id'] }}" {{ $item['category_id'] == $category['id'] ? 'selected' : '' }}>{{ $category['category'] }}</option>
                                                                     @endforeach
                                                                 </select>
                                                             </div>
@@ -151,7 +151,7 @@
                         <label for="category_id" class="form-label">Jenis Barang</label>
                         <select name="category_id" class="form-control" id="category_id" required>
                             @foreach ($categories as $category)
-                                <option value="{{ $category->id }}">{{ $category->category }}</option>
+                                <option value="{{ $category['id'] }}">{{ $category['category'] }}</option>
                             @endforeach
                         </select>
                     </div>

@@ -1,17 +1,25 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Models\CategoryItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class CategoryController extends Controller
 {
+    protected $apiUrl = 'http://127.0.0.1/Laris-Mart/public/api/categories';
+
     public function index()
     {
-        $categories = CategoryItem::all();
-        return response()->json($categories);
+        $response = Http::get($this->apiUrl);
+        $categories = $response->json();
+
+        return view('categories.index', ['categories' => $categories]);
+    }
+
+    public function create()
+    {
+        return view('categories.create');
     }
 
     public function store(Request $request)
@@ -20,14 +28,9 @@ class CategoryController extends Controller
             'category' => 'required',
         ]);
 
-        $category = CategoryItem::create($request->all());
-        return response()->json($category, 201);
-    }
+        Http::post($this->apiUrl, $request->all());
 
-    public function show($id)
-    {
-        $category = CategoryItem::findOrFail($id);
-        return response()->json($category);
+        return redirect()->route('categories.index')->with('success', 'Jenis Barang berhasil ditambahkan..');
     }
 
     public function update(Request $request, $id)
@@ -36,20 +39,20 @@ class CategoryController extends Controller
             'category' => 'required',
         ]);
 
-        $category = CategoryItem::findOrFail($id);
-        $category->update($request->all());
-        return response()->json($category);
+        Http::put("{$this->apiUrl}/{$id}", $request->all());
+
+        return redirect()->route('categories.index')->with('success', 'Jenis Barang berhasil di update..');
     }
 
     public function destroy($id)
     {
-        $category = CategoryItem::findOrFail($id);
-        
-        if ($category->items()->count() > 0) {
-            return response()->json(['error' => 'Kategori tidak bisa dihapus karena data terpakai pada Item'], 400);
+        $response = Http::delete("{$this->apiUrl}/{$id}");
+
+        if ($response->failed()) {
+            $error = $response->json()['error'];
+            return redirect()->route('categories.index')->withErrors(['category' => $error]);
         }
 
-        $category->delete();
-        return response()->json(null, 204);
+        return redirect()->route('categories.index')->with('success', 'Jenis Barang berhasil dihapus.');
     }
 }

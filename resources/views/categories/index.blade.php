@@ -60,11 +60,11 @@
                                     @foreach($categories as $category)
                                         <tr>
                                             <td>{{ $no++ }}</td>
-                                            <td>{{ $category->category }}</td>
+                                            <td>{{ $category['category'] }}</td>
                                             <td>
                                                 <!-- Actions for item (not transactions) -->
-                                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editItemModal{{ $category->id }}"><i class="fa fa-pen"></i> Edit</button>
-                                                <form action="{{ route('categories.destroy', $category->id) }}" method="POST" style="display:inline;">
+                                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editItemModal{{ $category['id'] }}"><i class="fa fa-pen"></i> Edit</button>
+                                                <form action="{{ route('categories.destroy', $category['id']) }}" method="POST" style="display:inline;">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button onclick="return confirm('Yakin ingin menghapus kategori ini?')" type="submit" class="btn btn-danger"><i class="fa fa-trash"></i> Hapus</button>
@@ -73,20 +73,20 @@
                                         </tr>
                         
                                         <!-- Edit Jenis Barang Modal -->
-                                        <div class="modal fade" id="editItemModal{{ $category->id }}" tabindex="-1" aria-labelledby="editItemModalLabel{{ $category->id }}" aria-hidden="true">
+                                        <div class="modal fade" id="editItemModal{{ $category['id'] }}" tabindex="-1" aria-labelledby="editItemModalLabel{{ $category['id'] }}" aria-hidden="true">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="editItemModalLabel{{ $category->id }}">Edit Jenis Barang</h5>
+                                                        <h5 class="modal-title" id="editItemModalLabel{{ $category['id'] }}">Edit Jenis Barang</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <form action="{{ route('categories.update', $category->id) }}" method="POST">
+                                                        <form action="{{ route('categories.update', $category['id']) }}" method="POST">
                                                             @csrf
                                                             @method('PUT')
                                                             <div class="mb-3">
-                                                                <label for="category{{ $category->id }}" class="form-label">Jenis Barang</label>
-                                                                <input type="text" name="category" class="form-control" id="category{{ $category->id }}" value="{{ $category->category }}" required>
+                                                                <label for="category{{ $category['id'] }}" class="form-label">Jenis Barang</label>
+                                                                <input type="text" name="category" class="form-control" id="category{{ $category['id'] }}" value="{{ $category['category'] }}" required>
                                                             </div>
                                                             <button type="submit" class="btn btn-primary">Update</button>
                                                         </form>

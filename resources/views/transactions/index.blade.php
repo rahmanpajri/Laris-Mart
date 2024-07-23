@@ -61,35 +61,35 @@
                                     @foreach($transactions as $transaction)
                                         <tr>
                                             <td>{{ $no++ }}</td>
-                                            <td>{{ $transaction->items->nama_item }}</td>
-                                            <td>{{ $transaction->jumlah_terjual }}</td>
-                                            <td>{{ $transaction->tanggal_transaksi }}</td>
+                                            <td>{{ $transaction['items']['nama_item'] }}</td>
+                                            <td>{{ $transaction['jumlah_terjual'] }}</td>
+                                            <td>{{ $transaction['tanggal_transaksi'] }}</td>
                                             <td>
-                                                <!-- Actions for item (not transactions) -->
-                                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editItemModal{{ $transaction->id }}"><i class="fa fa-pen"></i> Edit</button>
-                                                <form action="{{ route('transactions.destroy', $transaction->id) }}" method="POST" style="display:inline;">
+                                                <!-- Actions for transaction -->
+                                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editItemModal{{ $transaction['id'] }}"><i class="fa fa-pen"></i> Edit</button>
+                                                <form action="{{ route('transactions.destroy', $transaction['id']) }}" method="POST" style="display:inline;">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button onclick="return confirm('Yakin ingin menghapus transaksi ini?')" type="submit" class="btn btn-danger"><i class="fa fa-trash"></i> Hapus</button>
                                                 </form>
                                             </td>
                                         </tr>
-                        
+
                                         <!-- Edit Item Modal -->
-                                        <div class="modal fade" id="editItemModal{{ $transaction->id }}" tabindex="-1" aria-labelledby="editItemModalLabel{{ $transaction->id }}" aria-hidden="true">
+                                        <div class="modal fade" id="editItemModal{{ $transaction['id'] }}" tabindex="-1" aria-labelledby="editItemModalLabel{{ $transaction['id'] }}" aria-hidden="true">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="editItemModalLabel{{ $transaction->id }}">Edit Item</h5>
+                                                        <h5 class="modal-title" id="editItemModalLabel{{ $transaction['id'] }}">Edit Item</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <form action="{{ route('transactions.update', $transaction->id) }}" method="POST">
+                                                        <form action="{{ route('transactions.update', $transaction['id']) }}" method="POST">
                                                             @csrf
                                                             @method('PUT')
                                                             <div class="mb-3">
-                                                                <label for="jumlah_terjual{{ $transaction->id }}" class="form-label">Jumlah Terjual</label>
-                                                                <input type="number" name="jumlah_terjual" class="form-control" id="jumlah_terjual{{ $transaction->id }}" value="{{ $transaction->jumlah_terjual }}" required>
+                                                                <label for="jumlah_terjual{{ $transaction['id'] }}" class="form-label">Jumlah Terjual</label>
+                                                                <input type="number" name="jumlah_terjual" class="form-control" id="jumlah_terjual{{ $transaction['id'] }}" value="{{ $transaction['jumlah_terjual'] }}" required>
                                                             </div>
                                                             <button type="submit" class="btn btn-primary">Update</button>
                                                         </form>
@@ -105,7 +105,6 @@
                         <!-- /.card-body -->
                     </div>
                     <!-- /.card -->
-                    <!-- /.card -->
                 </div>
                 <!-- /.col -->
             </div>
@@ -120,17 +119,17 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="createItemModalLabel">Tambah Item</h5>
+                <h5 class="modal-title" id="createItemModalLabel">Tambah Transaksi</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form action="{{ route('transactions.store') }}" method="POST">
                     @csrf
                     <div class="mb-3">
-                        <label for="nama_item" class="form-label">Nama Item</label>
+                        <label for="item_id" class="form-label">Nama Item</label>
                         <select name="item_id" class="form-control" id="item_id" required>
                             @foreach($items as $item)
-                                <option value="{{ $item->id }}">{{ $item->nama_item }}</option>
+                                <option value="{{ $item['id'] }}">{{ $item['nama_item'] }}</option>
                             @endforeach
                         </select>
                     </div>

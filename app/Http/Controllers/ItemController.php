@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Models\CategoryItem;
-use App\Models\Item;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class ItemController extends Controller
 {
+    protected $apiUrl = 'http://127.0.0.1/Laris-Mart/public/api/items'; // Ganti dengan URL API Anda
+
     public function index()
     {
-        $items = Item::with('categories', 'transactions')->get();
-        $categories = CategoryItem::all();
+        $response = Http::get($this->apiUrl);
+        $items = $response->json();
+        $categories = Http::get('http://127.0.0.1/Laris-Mart/public/api/categories')->json(); // Jika Anda juga memerlukan kategori
+
         return view('items.index', compact('items', 'categories'));
     }
 
@@ -24,29 +26,34 @@ class ItemController extends Controller
             'category_id' => 'required|integer|exists:category_items,id',
         ]);
 
-        Item::create($request->all());
-        return redirect()->route('items.index')->with('success', 'Barang berhasil ditambahkan.');
-    }
+        $response = Http::post($this->apiUrl, $request->all());
 
-    public function update(Request $request, Item $item)
-    {
-        $request->validate([
-            'nama_item' => 'required',
-            'stok' => 'required|integer',
-            'category_id' => 'required|integer|exists:category_items,id',
-        ]);
-
-        $item->update($request->all());
-        return redirect()->route('items.index')->with('success', 'Barang berhasil diupdate.');
-    }
-
-    public function destroy(Item $item)
-    {
-        if ($item->transactions()->count() > 0) {
-            return redirect()->back()->withErrors(['item' => 'Item tidak bisa dihapus karena data terpakai pada Transaksi'])->withInput();
+        if ($response->successful()) {
+            return redirect()->route('items.index')->with('success', 'Barang berhasil ditambahkan.');
         }
 
-        $item->delete();
-        return redirect()->route('items.index')->with('success', 'Barang berhasil dihapus.');
+        return redirect()->back()->withErrors(['error' => 'Gagal menambahkan barang'])->withInput();
+    }
+
+    public function update(Request $request, $id)
+    {
+        $response = Http::put("{$this->apiUrl}/{$id}", $request->all());
+
+        if ($response->successful()) {
+            return redirect()->route('items.index')->with('success', 'Barang berhasil diupdate.');
+        }
+
+        return redirect()->back()->withErrors(['error' => 'Gagal mengupdate barang'])->withInput();
+    }
+
+    public function destroy($id)
+    {
+        $response = Http::delete("{$this->apiUrl}/{$id}");
+
+        if ($response->successful()) {
+            return redirect()->route('items.index')->with('success', 'Barang berhasil dihapus.');
+        }
+
+        return redirect()->back()->withErrors(['error' => 'Gagal menghapus barang']);
     }
 }

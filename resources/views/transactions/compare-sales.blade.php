@@ -110,10 +110,10 @@
                         <tbody>
                             @foreach ($allTransactions as $transaction)
                                 <tr>
-                                    <td>{{ $transaction->items->nama_item }}</td>
-                                    <td>{{ $transaction->jumlah_terjual }}</td>
-                                    <td>{{ $transaction->category_name }}</td>
-                                    <td>{{ $transaction->tanggal_transaksi }}</td>
+                                    <td>{{ $transaction['nama_item']  }}</td>
+                                    <td>{{ $transaction['jumlah_terjual'] }}</td>
+                                    <td>{{ $transaction['category_name'] }}</td>
+                                    <td>{{ $transaction['tanggal_transaksi'] }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
