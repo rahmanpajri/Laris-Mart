@@ -11,7 +11,7 @@ class ItemController extends Controller
 {
     public function index()
     {
-        $items = Item::with('categories')->get();
+        $items = Item::with('categories', 'transactions')->get();
         $categories = CategoryItem::all();
         return view('items.index', compact('items', 'categories'));
     }

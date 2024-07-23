@@ -16,7 +16,7 @@ class Item extends Model
         return $this->belongsTo(CategoryItem::class, 'category_id');
     }
 
-    public function transaction()
+    public function transactions()
     {
         return $this->hasMany(Transaction::class, 'item_id');
     }
