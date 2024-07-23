@@ -20,4 +20,16 @@ class Item extends Model
     {
         return $this->hasMany(Transaction::class, 'item_id');
     }
+
+    public function adjustStock($amount)
+    {
+        $newStock = $this->stok + $amount;
+
+        if ($newStock < 0) {
+            throw new \Exception('Stok tidak cukup.');
+        }
+
+        $this->stok = $newStock;
+        $this->save();
+    }
 }

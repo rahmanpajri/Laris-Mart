@@ -3,16 +3,30 @@
 
 @section('content')
 <div class="content-wrapper">
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Perbandingan Penjualan Kategori Barang</h1>
+                    <h1>Perbandingan Penjualan Jenis Barang</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Perbandingan Penjualan Kategori Barang</li>
+                        <li class="breadcrumb-item active">Perbandingan Penjualan Jenis Barang</li>
                     </ol>
                 </div>
             </div>
@@ -40,7 +54,7 @@
                     <div class="small-box bg-success">
                       <div class="inner">
                         <h3>{{ $maxSalesCategory['total_sales'] }}</h3>
-                        <p>{{ $maxSalesCategory['category'] }}</p>
+                        <p>Kategori: {{ $maxSalesCategory['category'] }}</p>
                       </div>
                       <div class="icon">
                         <i class="fas fa-chart-pie"></i>
@@ -53,7 +67,7 @@
                     <div class="small-box bg-danger">
                       <div class="inner">
                         <h3>{{ $minSalesCategory['total_sales'] }}</h3>
-                        <p>{{ $minSalesCategory['category'] }}</p>
+                        <p>Kategori: {{ $minSalesCategory['category'] }}</p>
                       </div>
                       <div class="icon">
                         <i class="fas fa-chart-pie"></i>
@@ -89,7 +103,7 @@
                             <tr>
                                 <th>Nama Barang</th>
                                 <th>Jumlah Terjual</th>
-                                <th>Kategori</th>
+                                <th>Jenis Barang</th>
                                 <th>Tanggal Transaksi</th>
                             </tr>
                         </thead>

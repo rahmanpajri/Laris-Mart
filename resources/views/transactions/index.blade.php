@@ -1,8 +1,21 @@
 @extends('layouts.app')
-
 @section('content')
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="container-fluid">
@@ -53,11 +66,11 @@
                                             <td>{{ $transaction->tanggal_transaksi }}</td>
                                             <td>
                                                 <!-- Actions for item (not transactions) -->
-                                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editItemModal{{ $transaction->id }}">Edit</button>
+                                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editItemModal{{ $transaction->id }}"><i class="fa fa-pen"></i> Edit</button>
                                                 <form action="{{ route('transactions.destroy', $transaction->id) }}" method="POST" style="display:inline;">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button onclick="return confirm('Yakin ingin menghapus transaksi ini?')" type="submit" class="btn btn-danger">Hapus</button>
+                                                    <button onclick="return confirm('Yakin ingin menghapus transaksi ini?')" type="submit" class="btn btn-danger"><i class="fa fa-trash"></i> Hapus</button>
                                                 </form>
                                             </td>
                                         </tr>

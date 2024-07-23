@@ -3,17 +3,31 @@
 @section('content')
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Table Category</h1>
+                    <h1>Table Jenis Barang</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Table Category</li>
+                        <li class="breadcrumb-item active">Table Jenis Barang</li>
                     </ol>
                 </div>
             </div>
@@ -26,10 +40,10 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="col-sm-12 justify-content-md-end pr-4 pt-4">
-                            <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createItemModal"><i class="fa fa-plus"></i> Tambah Category</button>
+                            <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createItemModal"><i class="fa fa-plus"></i> Tambah Jenis Barang</button>
                         </div>
                         <div class="card-header">
-                            <h3 class="card-title">Table Category</h3>
+                            <h3 class="card-title">Table Jenis Barang</h3>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
@@ -37,7 +51,7 @@
                                 <thead>
                                     <tr>
                                         <th>No.</th>
-                                        <th>Nama Category</th>
+                                        <th>Jenis Barang</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -49,21 +63,21 @@
                                             <td>{{ $category->category }}</td>
                                             <td>
                                                 <!-- Actions for item (not transactions) -->
-                                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editItemModal{{ $category->id }}">Edit</button>
+                                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editItemModal{{ $category->id }}"><i class="fa fa-pen"></i> Edit</button>
                                                 <form action="{{ route('categories.destroy', $category->id) }}" method="POST" style="display:inline;">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button onclick="return confirm('Yakin ingin menghapus kategori ini?')" type="submit" class="btn btn-danger">Hapus</button>
+                                                    <button onclick="return confirm('Yakin ingin menghapus kategori ini?')" type="submit" class="btn btn-danger"><i class="fa fa-trash"></i> Hapus</button>
                                                 </form>
                                             </td>
                                         </tr>
                         
-                                        <!-- Edit Category Modal -->
+                                        <!-- Edit Jenis Barang Modal -->
                                         <div class="modal fade" id="editItemModal{{ $category->id }}" tabindex="-1" aria-labelledby="editItemModalLabel{{ $category->id }}" aria-hidden="true">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="editItemModalLabel{{ $category->id }}">Edit Category</h5>
+                                                        <h5 class="modal-title" id="editItemModalLabel{{ $category->id }}">Edit Jenis Barang</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
@@ -71,7 +85,7 @@
                                                             @csrf
                                                             @method('PUT')
                                                             <div class="mb-3">
-                                                                <label for="category{{ $category->id }}" class="form-label">Nama Category</label>
+                                                                <label for="category{{ $category->id }}" class="form-label">Jenis Barang</label>
                                                                 <input type="text" name="category" class="form-control" id="category{{ $category->id }}" value="{{ $category->category }}" required>
                                                             </div>
                                                             <button type="submit" class="btn btn-primary">Update</button>
@@ -98,19 +112,19 @@
     </section>
 </div>
 
-<!-- Create Category Modal -->
+<!-- Create Jenis Barang Modal -->
 <div class="modal fade" id="createItemModal" tabindex="-1" aria-labelledby="createItemModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="createItemModalLabel">Tambah Category</h5>
+                <h5 class="modal-title" id="createItemModalLabel">Tambah Jenis Barang</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form action="{{ route('categories.store') }}" method="POST">
                     @csrf
                     <div class="mb-3">
-                        <label for="category" class="form-label">Nama Category</label>
+                        <label for="category" class="form-label">Jenis Barang</label>
                         <input type="text" name="category" class="form-control" id="category" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Simpan</button>

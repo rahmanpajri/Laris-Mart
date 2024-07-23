@@ -3,6 +3,20 @@
 @section('content')
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="container-fluid">
@@ -39,7 +53,7 @@
                                         <th>No.</th>
                                         <th>Nama Item</th>
                                         <th>Stok</th>
-                                        <th>Kategori Item</th>
+                                        <th>Jenis Barang Item</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -53,11 +67,11 @@
                                             <td>{{ $item->categories->category }}</td>
                                             <td>
                                                 <!-- Actions for item (not transactions) -->
-                                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editItemModal{{ $item->id }}">Edit</button>
+                                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editItemModal{{ $item->id }}"><i class="fa fa-pen"></i> Edit</button>
                                                 <form action="{{ route('items.destroy', $item->id) }}" method="POST" style="display:inline;">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button onclick="return confirm('Yakin ingin menghapus item ini?')" type="submit" class="btn btn-danger">Hapus</button>
+                                                    <button onclick="return confirm('Yakin ingin menghapus item ini?')" type="submit" class="btn btn-danger"><i class="fa fa-trash"></i> Hapus</button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -83,7 +97,7 @@
                                                                 <input type="number" name="stok" class="form-control" id="stok{{ $item->id }}" value="{{ $item->stok }}" required>
                                                             </div>
                                                             <div class="mb-3">
-                                                                <label for="category_id{{ $item->id }}" class="form-label">Kategori</label>
+                                                                <label for="category_id{{ $item->id }}" class="form-label">Jenis Barang</label>
                                                                 <select name="category_id" class="form-control" id="category_id{{ $item->id }}" required>
                                                                     @foreach ($categories as $category)
                                                                         <option value="{{ $category->id }}" {{ $item->category_id == $category->id ? 'selected' : '' }}>{{ $category->category }}</option>
@@ -134,7 +148,7 @@
                         <input type="number" name="stok" class="form-control" id="stok" required>
                     </div>
                     <div class="mb-3">
-                        <label for="category_id" class="form-label">Kategori</label>
+                        <label for="category_id" class="form-label">Jenis Barang</label>
                         <select name="category_id" class="form-control" id="category_id" required>
                             @foreach ($categories as $category)
                                 <option value="{{ $category->id }}">{{ $category->category }}</option>

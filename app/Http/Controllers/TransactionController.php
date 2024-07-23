@@ -19,50 +19,70 @@ class TransactionController extends Controller
 
     public function store(Request $request)
     {
+        // Validasi input
         $request->validate([
-            'item_id' => 'required',
-            'jumlah_terjual' => 'required|integer',
+            'item_id' => 'required|exists:items,id',
+            'jumlah_terjual' => 'required|integer|min:1',
         ]);
-        $request->merge(['tanggal_transaksi' => now()]);
 
+        // Ambil item dari database
         $item = Item::find($request->item_id);
-        if ($item) {
-            $item->stok -= $request->jumlah_terjual;
-            $item->save();
+
+        // Periksa apakah stok mencukupi
+        if ($item->stok < $request->jumlah_terjual) {
+            return redirect()->back()->withErrors(['jumlah_terjual' => 'Stok tidak cukup.'])->withInput();
         }
 
-        Transaction::create($request->all());
+        // Simpan transaksi
+        $transaction = new Transaction($request->all());
+        $transaction->tanggal_transaksi = now();
+        $transaction->save();
+
+        // Kurangi stok
+        $item->stok -= $request->jumlah_terjual;
+        $item->save();
+
         return redirect()->route('transactions.index')->with('success', 'Barang berhasil ditambahkan.');
     }
+
 
     public function update(Request $request, Transaction $transaction)
     {
         $request->validate([
-            'jumlah_terjual' => 'required|integer',
+            'jumlah_terjual' => 'required|integer|min:1',
         ]);
-        $request->merge(['tanggal_transaksi' => now()]);
 
         $item = $transaction->items;
-        $oldQuantity = $transaction->jumlah_terjual;
-        $newQuantity = $request->jumlah_terjual;
 
-        // Update stok
-        $item->stok += $oldQuantity; // Kembalikan stok lama
-        $item->stok -= $newQuantity; // Kurangi stok baru
+        // Kembalikan stok sebelumnya
+        $item->stok += $transaction->jumlah_terjual;
+
+        if ($item->stok < $request->jumlah_terjual) {
+            return redirect()->back()->withErrors(['jumlah_terjual' => 'Stok tidak cukup untuk transaksi ini.'])->withInput();
+        }
+
+        // Update jumlah terjual
+        $transaction->update($request->all());
+
+        // Kurangi stok baru
+        $item->stok -= $request->jumlah_terjual;
         $item->save();
 
-        $transaction->update($request->all());
-        return redirect()->route('transactions.index')->with('success', 'Barang berhasil diupdate.');
+        return redirect()->route('transactions.index')->with('success', 'Transaksi berhasil diupdate.');
     }
+
 
     public function destroy(Transaction $transaction)
     {
         $item = $transaction->items;
-        $item->stok += $transaction->jumlah_terjual; // Tambah stok yang dihapus
+
+        // Tambah stok item
+        $item->stok += $transaction->jumlah_terjual;
         $item->save();
 
         $transaction->delete();
-        return redirect()->route('transactions.index')->with('success', 'Barang berhasil dihapus.');
+
+        return redirect()->route('transactions.index')->with('success', 'Transaksi berhasil dihapus.');
     }
 
     public function show(Request $request)

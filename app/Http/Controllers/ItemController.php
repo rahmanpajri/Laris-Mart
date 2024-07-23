@@ -42,6 +42,10 @@ class ItemController extends Controller
 
     public function destroy(Item $item)
     {
+        if ($item->transactions()->count() > 0) {
+            return redirect()->back()->withErrors(['item' => 'Item tidak bisa dihapus karena data terpakai pada Transaksi'])->withInput();
+        }
+
         $item->delete();
         return redirect()->route('items.index')->with('success', 'Barang berhasil dihapus.');
     }
