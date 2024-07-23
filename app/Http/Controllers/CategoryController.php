@@ -1,18 +1,55 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
+use App\Models\CategoryItem;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
 
 class CategoryController extends Controller
 {
-
     public function index()
     {
-        $response = Http::get('http://127.0.0.1:8000/api/categories');
-        $categories = $response->json();
+        $categories = CategoryItem::all();
+        return response()->json($categories);
+    }
 
-        return view('categories.index', ['categories' => $categories]);
+    public function store(Request $request)
+    {
+        $request->validate([
+            'category' => 'required',
+        ]);
+
+        $category = CategoryItem::create($request->all());
+        return response()->json($category, 201);
+    }
+
+    public function show($id)
+    {
+        $category = CategoryItem::findOrFail($id);
+        return response()->json($category);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'category' => 'required',
+        ]);
+
+        $category = CategoryItem::findOrFail($id);
+        $category->update($request->all());
+        return response()->json($category);
+    }
+
+    public function destroy($id)
+    {
+        $category = CategoryItem::findOrFail($id);
+        
+        if ($category->items()->count() > 0) {
+            return response()->json(['error' => 'Kategori tidak bisa dihapus karena data terpakai pada Item'], 400);
+        }
+
+        $category->delete();
+        return response()->json(null, 204);
     }
 }
