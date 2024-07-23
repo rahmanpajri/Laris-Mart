@@ -13,6 +13,6 @@ class CategoryItem extends Model
     
     public function items()
     {
-        return $this->hasMany(Items::class, 'category_id');
+        return $this->hasMany(Item::class, 'category_id');
     }
 }

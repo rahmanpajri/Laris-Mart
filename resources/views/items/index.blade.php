@@ -33,28 +33,23 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
-                            <table id="example2" class="table table-bordered table-hover">
+                            <table id="example1" class="table table-bordered table-hover">
                                 <thead>
                                     <tr>
                                         <th>No.</th>
-                                        <th>Nama Barang</th>
+                                        <th>Nama Item</th>
                                         <th>Stok</th>
-                                        <th>Jumlah Terjual</th>
-                                        <th>Tanggal Transaksi</th>
-                                        <th>Jenis Barang</th>
+                                        <th>Kategori Item</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php $no = 1; ?>
                                     @foreach($items as $item)
-                                        @foreach($item->transactions as $transaction)
                                         <tr>
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $item->nama_item }}</td>
                                             <td>{{ $item->stok }}</td>
-                                            <td>{{ $transaction->jumlah_terjual }}</td>
-                                            <td>{{ $transaction->tanggal_transaksi }}</td>
                                             <td>{{ $item->categories->category }}</td>
                                             <td>
                                                 <!-- Actions for item (not transactions) -->
@@ -62,18 +57,17 @@
                                                 <form action="{{ route('items.destroy', $item->id) }}" method="POST" style="display:inline;">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger">Hapus</button>
+                                                    <button onclick="return confirm('Yakin ingin menghapus item ini?')" type="submit" class="btn btn-danger">Hapus</button>
                                                 </form>
                                             </td>
                                         </tr>
-                                        @endforeach
                         
                                         <!-- Edit Item Modal -->
                                         <div class="modal fade" id="editItemModal{{ $item->id }}" tabindex="-1" aria-labelledby="editItemModalLabel{{ $item->id }}" aria-hidden="true">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="editItemModalLabel{{ $item->id }}">Edit Barang</h5>
+                                                        <h5 class="modal-title" id="editItemModalLabel{{ $item->id }}">Edit Item</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
@@ -81,7 +75,7 @@
                                                             @csrf
                                                             @method('PUT')
                                                             <div class="mb-3">
-                                                                <label for="nama_item{{ $item->id }}" class="form-label">Nama Barang</label>
+                                                                <label for="nama_item{{ $item->id }}" class="form-label">Nama Item</label>
                                                                 <input type="text" name="nama_item" class="form-control" id="nama_item{{ $item->id }}" value="{{ $item->nama_item }}" required>
                                                             </div>
                                                             <div class="mb-3">
@@ -125,14 +119,14 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="createItemModalLabel">Tambah Barang</h5>
+                <h5 class="modal-title" id="createItemModalLabel">Tambah Item</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form action="{{ route('items.store') }}" method="POST">
                     @csrf
                     <div class="mb-3">
-                        <label for="nama_item" class="form-label">Nama Barang</label>
+                        <label for="nama_item" class="form-label">Nama Item</label>
                         <input type="text" name="nama_item" class="form-control" id="nama_item" required>
                     </div>
                     <div class="mb-3">

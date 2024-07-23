@@ -33,7 +33,7 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
-                            <table id="example2" class="table table-bordered table-hover">
+                            <table id="example1" class="table table-bordered table-hover">
                                 <thead>
                                     <tr>
                                         <th>No.</th>
@@ -57,7 +57,7 @@
                                                 <form action="{{ route('transactions.destroy', $transaction->id) }}" method="POST" style="display:inline;">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button onclick="return confirm('Yakin ingin menghapus artikel ini?')" type="submit" class="btn btn-danger">Hapus</button>
+                                                    <button onclick="return confirm('Yakin ingin menghapus transaksi ini?')" type="submit" class="btn btn-danger">Hapus</button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -122,7 +122,7 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="jumlah_terjual" class="form-label">Stok</label>
+                        <label for="jumlah_terjual" class="form-label">Jumlah Terjual</label>
                         <input type="number" name="jumlah_terjual" class="form-control" id="jumlah_terjual" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Simpan</button>
