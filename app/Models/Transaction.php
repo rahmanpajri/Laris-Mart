@@ -13,6 +13,6 @@ class Transaction extends Model
 
     public function barang()
     {
-        return $this->belongsTo(Items::class);
+        return $this->belongsTo(Items::class, 'item_id');
     }
 }
