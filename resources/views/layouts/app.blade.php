@@ -78,7 +78,7 @@
                         data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
                         <li class="nav-item">
-                            <a href="{{ route('dashboard')}}" class="nav-link active">
+                            <a href="{{ route('/')}}" class="nav-link active">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
                                     Dashboard
@@ -108,7 +108,7 @@
                             <a href="{{ route('categories.index')}}" class="nav-link">
                                 <i class="nav-icon fas fa-table"></i>
                                 <p>
-                                    Tabel Kategori
+                                    Tabel Jenis Barang
                                 </p>
                             </a>
                         </li>

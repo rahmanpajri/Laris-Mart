@@ -54,6 +54,6 @@ class ItemController extends Controller
             return redirect()->route('items.index')->with('success', 'Barang berhasil dihapus.');
         }
 
-        return redirect()->back()->withErrors(['error' => 'Gagal menghapus barang']);
+        return redirect()->back()->withErrors(['error' => 'Item tidak bisa dihapus karena data terpakai pada Transaksi']);
     }
 }

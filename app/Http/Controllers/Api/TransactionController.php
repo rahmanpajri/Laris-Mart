@@ -89,7 +89,7 @@ class TransactionController extends Controller
             })
             ->groupBy('category_items.category')
             ->orderBy('total_sales', 'desc')
-            ->first();
+            ->first()?? ['category' => 'N/A', 'total_sales' => 0];
     
         $minSalesCategory = Transaction::selectRaw('category_items.category, sum(transactions.jumlah_terjual) as total_sales')
             ->join('items', 'transactions.item_id', '=', 'items.id')
@@ -102,7 +102,7 @@ class TransactionController extends Controller
             })
             ->groupBy('category_items.category')
             ->orderBy('total_sales', 'asc')
-            ->first();
+            ->first()?? ['category' => 'N/A', 'total_sales' => 0];
     
         $allTransactions = Transaction::select('transactions.*', 'items.nama_item', 'category_items.category as category_name')
             ->join('items', 'transactions.item_id', '=', 'items.id')

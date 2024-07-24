@@ -16,11 +16,11 @@ class DatabaseSeeder extends Seeder
         $jenis1 = CategoryItem::create(['category' => 'Konsumsi']);
         $jenis2 = CategoryItem::create(['category' => 'Pembersih']);
 
-        $barang1 = Item::create(['nama_item' => 'Kopi', 'stok' => 100, 'category_id' => $jenis1->id]);
-        $barang2 = Item::create(['nama_item' => 'Teh', 'stok' => 100, 'category_id' => $jenis1->id]);
-        $barang3 = Item::create(['nama_item' => 'Pasta Gigi', 'stok' => 100, 'category_id' => $jenis2->id]);
-        $barang4 = Item::create(['nama_item' => 'Sabun Mandi', 'stok' => 100, 'category_id' => $jenis2->id]);
-        $barang5 = Item::create(['nama_item' => 'Sampo', 'stok' => 100, 'category_id' => $jenis2->id]);
+        $barang1 = Item::create(['nama_item' => 'Kopi', 'stok' => 75, 'category_id' => $jenis1->id]);
+        $barang2 = Item::create(['nama_item' => 'Teh', 'stok' => 76, 'category_id' => $jenis1->id]);
+        $barang3 = Item::create(['nama_item' => 'Pasta Gigi', 'stok' => 80, 'category_id' => $jenis2->id]);
+        $barang4 = Item::create(['nama_item' => 'Sabun Mandi', 'stok' => 70, 'category_id' => $jenis2->id]);
+        $barang5 = Item::create(['nama_item' => 'Sampo', 'stok' => 75, 'category_id' => $jenis2->id]);
 
         Transaction::create(['item_id' => $barang1->id, 'jumlah_terjual' => 10, 'tanggal_transaksi' => '2021-05-01']);
         Transaction::create(['item_id' => $barang2->id, 'jumlah_terjual' => 19, 'tanggal_transaksi' => '2021-05-05']);

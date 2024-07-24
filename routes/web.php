@@ -9,4 +9,4 @@ Route::resource('/transactions', App\Http\Controllers\TransactionController::cla
 Route::resource('/categories', App\Http\Controllers\CategoryController::class);
 
 Route::get('/items/compare-sales', [ItemController::class, 'compareSales'])->name('items.compare-sales');
-Route::get('/dashboard', [TransactionController::class, 'show'])->name('dashboard');
+Route::get('/', [TransactionController::class, 'show'])->name('/');

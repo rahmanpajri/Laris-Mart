@@ -40,13 +40,21 @@
                     <!-- small card -->
                     <div class="small-box bg-info">
                       <div class="inner">
-                        <h3>{{ $maxSalesCategory['total_sales'] + $minSalesCategory['total_sales'] }}</h3>
+                        @php
+                            $totalJumlahTerjual = 0;
+                        @endphp
+                        @foreach ($allTransactions as $transactions)
+                            <?php
+                                $totalJumlahTerjual += $transactions['jumlah_terjual']
+                            ?>
+                        @endforeach
+                        <h3>{{$totalJumlahTerjual}}</h3>
                         <p>Total Penjualan</p>
                       </div>
                       <div class="icon">
                         <i class="fas fa-shopping-cart"></i>
                       </div>
-                      <a href="#" class="small-box-footer">Total Penjualan</a>
+                      <a href="#" class="small-box-footer">TOTAL PENJUALAN</a>
                     </div>
                 </div>
                 <div class="col-lg-4 col-6">
@@ -59,7 +67,7 @@
                       <div class="icon">
                         <i class="fas fa-chart-pie"></i>
                       </div>
-                      <a href="#" class="small-box-footer">Penjualan Terbanyak</a>
+                      <a href="#" class="small-box-footer">PENJUALAN TERBANYAK</a>
                     </div>
                 </div>
                 <div class="col-lg-4 col-6">
@@ -72,7 +80,7 @@
                       <div class="icon">
                         <i class="fas fa-chart-pie"></i>
                       </div>
-                      <a href="#" class="small-box-footer">Penjualan Terendah</a>
+                      <a href="#" class="small-box-footer">PENJUALAN TERENDAH</a>
                     </div>
                 </div>
             </div>
@@ -83,7 +91,7 @@
                 </div>
                 <div class="card-body">
                     <!-- Date Range Filter Form -->
-                    <form method="GET" action="{{ route('dashboard') }}" class="mb-4">
+                    <form method="GET" action="{{ route('/') }}" class="mb-4">
                         <div class="form-row">
                             <div class="form-group col-md-3">
                                 <label for="start_date">Start Date:</label>
@@ -101,8 +109,8 @@
                     <table id="example1" class="table table-bordered table-hover">
                         <thead>
                             <tr>
-                                <th>Nama Barang</th>
                                 <th>Jumlah Terjual</th>
+                                <th>Nama Barang</th>
                                 <th>Jenis Barang</th>
                                 <th>Tanggal Transaksi</th>
                             </tr>
@@ -110,8 +118,8 @@
                         <tbody>
                             @foreach ($allTransactions as $transaction)
                                 <tr>
-                                    <td>{{ $transaction['nama_item']  }}</td>
                                     <td>{{ $transaction['jumlah_terjual'] }}</td>
+                                    <td>{{ $transaction['nama_item']  }}</td>
                                     <td>{{ $transaction['category_name'] }}</td>
                                     <td>{{ $transaction['tanggal_transaksi'] }}</td>
                                 </tr>
